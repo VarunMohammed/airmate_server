@@ -11,7 +11,7 @@ dotenv.config({path: "./.env"});
 const app = express()
 const port = 8080
 
-mongoose.connect(`mongodb+srv://airmatedev:${process.env.MONGODB_PASSWORD}@airmate.dplynfb.mongodb.net/?retryWrites=true&w=majority&appName=airmate`)
+mongoose.connect(`mongodb+srv://airmatedev:airmate.dev@airmate.dplynfb.mongodb.net/?retryWrites=true&w=majority&appName=airmate`)
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once('open', () => {
