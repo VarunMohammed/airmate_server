@@ -9,7 +9,7 @@ const User = require('./user')
 
 dotenv.config({path: "./.env"});
 const app = express()
-const port = 8080
+const port = 80
 
 mongoose.connect(`mongodb+srv://airmatedev:airmate.dev@airmate.dplynfb.mongodb.net/?retryWrites=true&w=majority&appName=airmate`)
 const db = mongoose.connection;
