@@ -28,7 +28,12 @@ db.once('open', () => {
 app.use(express.json());   
 
 app.post('/send-email', (req,res) => {
-    const { email, otp } = req.body;
+    const response = req.body;
+    const email = response['email'];
+    const otp = response['otp'];
+
+    console.log(email);
+    console.log(otp);
 
     const mailOptions = {
         from: 'airmate.dev@gmail.com',
