@@ -11,7 +11,7 @@ const User = require('./user')
 
 dotenv.config({path: "./.env"});
 const app = express()
-const port = 8080
+const port = 1337
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -31,8 +31,7 @@ db.once('open', () => {
 app.use(bodyParser.json());   
 
 app.post('/send-email', (req,res) => {
-    const randomNum = Math.floor(Math.random() * 100000);
-    const otp = String(randomNum).padStart(5, '0');
+    const otp = req.body.otp;
 
     const mailOptions = {
         from: 'airmate.dev@gmail.com',
