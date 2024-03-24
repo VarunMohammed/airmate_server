@@ -32,7 +32,7 @@ app.post('/send-email', (req,res) => {
 
     const mailOptions = {
         from: 'airmate.dev@gmail.com',
-        to: `${email}`,
+        to: email,
         subject: `${otp} : AirMate Password Reset OTP`,
         text: `OTP to reset AirMate password is: ${otp}`
     };
