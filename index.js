@@ -1,10 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
-const AWS = require('aws-sdk');
 
 const mongoose = require('mongoose')
 const User = require('./user')
@@ -31,7 +28,7 @@ db.once('open', () => {
 app.use(bodyParser.json());   
 
 app.post('/send-email', (req,res) => {
-    const otp = req.body.otp;
+    const otp = req.body;
 
     const mailOptions = {
         from: 'airmate.dev@gmail.com',
