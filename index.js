@@ -25,14 +25,14 @@ db.once('open', () => {
     console.log('Connected to MongoDB');
 })
 
-app.use(bodyParser.json());   
+app.use(express.json());   
 
 app.post('/send-email', (req,res) => {
-    const otp = req.body;
+    const { email, otp } = req.body;
 
     const mailOptions = {
         from: 'airmate.dev@gmail.com',
-        to: 'varunmohammed2002@gmail.com',
+        to: `${email}`,
         subject: `${otp} : AirMate Password Reset OTP`,
         text: `OTP to reset AirMate password is: ${otp}`
     };
