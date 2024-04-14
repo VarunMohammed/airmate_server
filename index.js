@@ -47,7 +47,6 @@ app.post('/send-email', (req,res) => {
 })
 
 const userDetailsSchema = new mongoose.Schema({
-    UserID: { type: Number, required: true, unique: true },
     FirstName: { type: String, required: true },
     MiddleName: { type: String },
     LastName: { type: String, required: true },
@@ -64,7 +63,7 @@ const userDetailsSchema = new mongoose.Schema({
   });
 const User = mongoose.model('User', userDetailsSchema);
 
-app.post('/api/register', async (req, res) => {
+app.post('/register', async (req, res) => {
     try {
       // Create a new user with data from the request body
       const newUser = new UserDetails(req.body);
@@ -76,7 +75,19 @@ app.post('/api/register', async (req, res) => {
       // Handle errors
       res.status(500).json({ message: 'Failed to create user', error: error.message });
     }
-  });
+});
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    if (user.password !== password) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    res.status(200).json({ message: 'Login successful', user });
+});
 
 app.post('/users', async (req, res) => {
     const users = await User.find();
