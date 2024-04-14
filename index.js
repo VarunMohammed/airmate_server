@@ -66,7 +66,7 @@ const User = mongoose.model('User', userDetailsSchema);
 app.post('/register', async (req, res) => {
     try {
       // Create a new user with data from the request body
-      const newUser = new UserDetails(req.body);
+      const newUser = new User(req.body);
       // Save the new user to the database
       await newUser.save();
       // Respond with success message and the new user data
