@@ -79,7 +79,7 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ 'Email': email });
     if (!user) {
         return res.status(401).json({ message: 'Invalid username or password' });
     }
