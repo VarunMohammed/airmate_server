@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 
 const mongoose = require('mongoose')
-const User = require('./user')
 
 dotenv.config({path: "./.env"});
 const app = express()
@@ -47,9 +46,37 @@ app.post('/send-email', (req,res) => {
     })
 })
 
-app.post('/', (req, res) => {
-    res.status(200).json({ message: 'Hello' });
-})
+const userDetailsSchema = new mongoose.Schema({
+    UserID: { type: Number, required: true, unique: true },
+    FirstName: { type: String, required: true },
+    MiddleName: { type: String },
+    LastName: { type: String, required: true },
+    Gender: { type: String },
+    Email: { type: String },
+    Phone: { type: String },
+    AadhaarNumber: { type: String },
+    PassportNumber: { type: String },
+    hasPassport: { type: Boolean, required: true },
+    passportCountry: { type: String },
+    passportexpirydate: { type: String },
+    address: { type: String },
+    password: { type: String, required: true, minlength: 8 },
+  });
+const User = mongoose.model('User', userDetailsSchema);
+
+app.post('/api/register', async (req, res) => {
+    try {
+      // Create a new user with data from the request body
+      const newUser = new UserDetails(req.body);
+      // Save the new user to the database
+      await newUser.save();
+      // Respond with success message and the new user data
+      res.status(201).json({ message: 'User created successfully', user: newUser });
+    } catch (error) {
+      // Handle errors
+      res.status(500).json({ message: 'Failed to create user', error: error.message });
+    }
+  });
 
 app.post('/users', async (req, res) => {
     const users = await User.find();
@@ -83,30 +110,9 @@ app.put('/user/:id', async (req, res) => {
 });
 
 app.post('/register', async (req,res) => {
-    const { email, password } = req.body;
-
-    const params = {
-        ClientId: process.env.CLIENT_ID,
-        Password: password,
-        Username: email,
-        UserAttributes: [
-            {
-                Name: 'email',
-                Value: email
-            }
-        ]
-    };
-
-    try {
-        await CognitoIdentity.signUp(params).promise();
-        res.status(200).json({ message: 'User registered successfully' });
-    } catch (err) {
-        if (err.code === "UsernameExistsException") {
-            res.status(409).json({ message: 'User already exists' });
-        } else {
-            res.status(500).json({ message: `Failed to register user: ${err}` });
-        }
-    }
+    const user = new User(req.body);
+    await user.save();
+    res.status(201).json({ message: 'User created successfully', user: user });
 });
 
 app.post('/login', async (req, res) => {
