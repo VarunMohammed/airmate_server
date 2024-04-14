@@ -9,17 +9,13 @@ const cabinClassController = require('./project backend/classcontrol');
 const passengerBookingController = require('./project backend/bookingcontrol');
 
 const app = express();
-const mongoose = require('mongoose');
-const uri = 'mongodb+srv://airmatedev:airmate.dev@airmate.dplynfb.mongodb.net/test?retryWrites=true&w=majority&appName=airmate';
+mongoose.connect(`mongodb+srv://airmatedev:airmate.dev@airmate.dplynfb.mongodb.net/?retryWrites=true&w=majority&appName=airmate`)
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+})
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(uri);
-    console.log('Connected to MongoDB Atlas');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
-  }
-};
 defineSchemasAndModels();
 app.use(express.json());
 
