@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
-const User = require('./models/User');
+const User = require('./User');
 const jwt = require('jsonwebtoken');
 
 dotenv.config({path: "./.env"});
