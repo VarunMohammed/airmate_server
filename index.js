@@ -46,6 +46,27 @@ app.post('/send-email', (req,res) => {
     })
 })
 
+app.post('/baggage-email', (req,res) => {
+    const { email, content } = req.body;
+
+    const mailOptions = {
+        from: 'airmate.dev@gmail.com',
+        to: email,
+        subject: `Your baggage has been checked in.`,
+        text: `Your baggage has been checked in with a weight of ${content}`
+    };
+
+    transporter.sendMail(mailOptions, (error,info) => {
+        if(error) {
+            console.log(error);
+            res.status(500).send('Error sending mail' + error);
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).send('Email sent successfully').body(otp);
+        }
+    })
+})
+
 const userDetailsSchema = new mongoose.Schema({
     FirstName: { type: String, required: true },
     MiddleName: { type: String },
@@ -79,7 +100,7 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ 'Email': email });
+    const user = await User.findOne({ 'Email': email, });
     if (!user) {
         return res.status(401).json({ message: 'Invalid username or password' });
     }
